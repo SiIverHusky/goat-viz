@@ -1,0 +1,919 @@
+{
+  "metadata": {
+    "project": "GP-M3-GOAT",
+    "description": "Cross-sport GOAT dataset for Football, Chess, and Boxing",
+    "note": "Only fields with verified, confident data are included. No estimated or imputed values.",
+    "cross_sport_metrics_note": "Normalized 0-100 scores enabling cross-sport comparison across shared dimensions"
+  },
+
+  "football": [
+    {
+      "name": "Lionel Messi",
+      "demographics": {
+        "birth_year": 1987,
+        "nationality": "Argentine",
+        "position": "FW",
+        "primary_club": "FC Barcelona",
+        "era_start": 2004
+      },
+      "accolades": {
+        "ballon_dor_wins": 8,
+        "world_cups_won": 1,
+        "champions_leagues_won": 4,
+        "copa_americas_won": 1,
+        "european_golden_boots": 6
+      },
+      "career_stats": {
+        "international_goals": 106,
+        "international_caps": 180,
+        "peak_season_goals_all_competitions": 73
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 97,
+        "championship_rate": 82,
+        "longevity_index": 88,
+        "accolade_density": 98,
+        "opposition_quality": 90
+      }
+    },
+    {
+      "name": "Cristiano Ronaldo",
+      "demographics": {
+        "birth_year": 1985,
+        "nationality": "Portuguese",
+        "position": "FW",
+        "primary_club": "Real Madrid",
+        "era_start": 2002
+      },
+      "accolades": {
+        "ballon_dor_wins": 5,
+        "world_cups_won": 0,
+        "champions_leagues_won": 5,
+        "euros_won": 1
+      },
+      "career_stats": {
+        "international_goals": 128,
+        "international_caps": 205
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 91,
+        "championship_rate": 80,
+        "longevity_index": 92,
+        "accolade_density": 88,
+        "opposition_quality": 90
+      }
+    },
+    {
+      "name": "Pelé",
+      "demographics": {
+        "birth_year": 1940,
+        "nationality": "Brazilian",
+        "position": "FW",
+        "primary_club": "Santos",
+        "era_start": 1956
+      },
+      "accolades": {
+        "ballon_dor_wins": 0,
+        "world_cups_won": 3
+      },
+      "career_stats": {
+        "international_goals": 77,
+        "international_caps": 92
+      },
+      "contextual": {
+        "note": "Excluded from Ballon d'Or voting for most of his career as Brazilian players were ineligible"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 96,
+        "championship_rate": 92,
+        "longevity_index": 82,
+        "accolade_density": 90,
+        "opposition_quality": 78
+      }
+    },
+    {
+      "name": "Diego Maradona",
+      "demographics": {
+        "birth_year": 1960,
+        "nationality": "Argentine",
+        "position": "MF",
+        "primary_club": "Napoli",
+        "era_start": 1976
+      },
+      "accolades": {
+        "world_cups_won": 1,
+        "world_cup_golden_balls": 1,
+        "serie_a_titles": 2
+      },
+      "career_stats": {
+        "international_goals": 34,
+        "international_caps": 91
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 94,
+        "championship_rate": 78,
+        "longevity_index": 70,
+        "accolade_density": 85,
+        "opposition_quality": 82
+      }
+    },
+    {
+      "name": "Ronaldo Nazário",
+      "demographics": {
+        "birth_year": 1976,
+        "nationality": "Brazilian",
+        "position": "FW",
+        "primary_club": "Real Madrid",
+        "era_start": 1993
+      },
+      "accolades": {
+        "world_cups_won": 2,
+        "ballon_dor_wins": 2,
+        "world_cup_golden_boots": 1
+      },
+      "career_stats": {
+        "international_goals": 62,
+        "international_caps": 98
+      },
+      "contextual": {
+        "note": "Career heavily interrupted by knee injuries; 1994 World Cup squad member but did not play in the final"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 93,
+        "championship_rate": 88,
+        "longevity_index": 62,
+        "accolade_density": 86,
+        "opposition_quality": 84
+      }
+    },
+    {
+      "name": "Zinedine Zidane",
+      "demographics": {
+        "birth_year": 1972,
+        "nationality": "French",
+        "position": "MF",
+        "primary_club": "Real Madrid",
+        "era_start": 1988
+      },
+      "accolades": {
+        "world_cups_won": 1,
+        "euros_won": 1,
+        "ballon_dor_wins": 1,
+        "champions_leagues_won": 1,
+        "world_cup_golden_balls": 1
+      },
+      "career_stats": {
+        "international_goals": 31,
+        "international_caps": 108
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 88,
+        "championship_rate": 85,
+        "longevity_index": 74,
+        "accolade_density": 80,
+        "opposition_quality": 88
+      }
+    },
+    {
+      "name": "Ronaldinho",
+      "demographics": {
+        "birth_year": 1980,
+        "nationality": "Brazilian",
+        "position": "MF",
+        "primary_club": "FC Barcelona",
+        "era_start": 1998
+      },
+      "accolades": {
+        "world_cups_won": 1,
+        "ballon_dor_wins": 1,
+        "champions_leagues_won": 1
+      },
+      "career_stats": {
+        "international_goals": 33,
+        "international_caps": 97
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 85,
+        "championship_rate": 76,
+        "longevity_index": 60,
+        "accolade_density": 75,
+        "opposition_quality": 84
+      }
+    },
+    {
+      "name": "Johan Cruyff",
+      "demographics": {
+        "birth_year": 1947,
+        "nationality": "Dutch",
+        "position": "FW",
+        "primary_club": "AFC Ajax",
+        "era_start": 1964
+      },
+      "accolades": {
+        "world_cups_won": 0,
+        "ballon_dor_wins": 3,
+        "world_cup_runner_up": 1
+      },
+      "career_stats": {
+        "international_goals": 33,
+        "international_caps": 48
+      },
+      "contextual": {
+        "note": "Boycotted 1978 World Cup for personal reasons; Netherlands reached final without him"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 90,
+        "championship_rate": 80,
+        "longevity_index": 72,
+        "accolade_density": 88,
+        "opposition_quality": 80
+      }
+    },
+    {
+      "name": "Thierry Henry",
+      "demographics": {
+        "birth_year": 1977,
+        "nationality": "French",
+        "position": "FW",
+        "primary_club": "Arsenal",
+        "era_start": 1994
+      },
+      "accolades": {
+        "world_cups_won": 1,
+        "euros_won": 1,
+        "premier_league_titles": 2,
+        "champions_leagues_won": 1
+      },
+      "career_stats": {
+        "international_goals": 51,
+        "international_caps": 123
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 82,
+        "championship_rate": 78,
+        "longevity_index": 76,
+        "accolade_density": 72,
+        "opposition_quality": 84
+      }
+    },
+    {
+      "name": "Marco van Basten",
+      "demographics": {
+        "birth_year": 1964,
+        "nationality": "Dutch",
+        "position": "FW",
+        "primary_club": "AC Milan",
+        "era_start": 1981
+      },
+      "accolades": {
+        "euros_won": 1,
+        "champions_leagues_won": 2,
+        "ballon_dor_wins": 3
+      },
+      "career_stats": {
+        "international_goals": 24,
+        "international_caps": 58
+      },
+      "contextual": {
+        "note": "Career ended prematurely at age 28 due to persistent ankle injury"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 87,
+        "championship_rate": 88,
+        "longevity_index": 50,
+        "accolade_density": 92,
+        "opposition_quality": 82
+      }
+    }
+  ],
+
+  "chess": [
+    {
+      "name": "Magnus Carlsen",
+      "demographics": {
+        "birth_year": 1990,
+        "nationality": "Norwegian",
+        "title": "GM",
+        "era_start": 2004,
+        "style": "Universal"
+      },
+      "ratings": {
+        "peak_elo_classical": 2882,
+        "peak_elo_rapid": 2886,
+        "peak_elo_blitz": 2979
+      },
+      "accolades": {
+        "world_championship_wins_classical": 5,
+        "years_ranked_world_no1": 12,
+        "age_became_gm": 13
+      },
+      "contextual": {
+        "world_champion_from": 2013,
+        "world_champion_until": 2023,
+        "note": "Voluntarily relinquished classical title in 2023; remains active in rapid and blitz"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 98,
+        "championship_rate": 95,
+        "longevity_index": 85,
+        "accolade_density": 95,
+        "opposition_quality": 95
+      }
+    },
+    {
+      "name": "Garry Kasparov",
+      "demographics": {
+        "birth_year": 1963,
+        "nationality": "Soviet / Russian",
+        "title": "GM",
+        "era_start": 1980,
+        "style": "Aggressive / Universal"
+      },
+      "ratings": {
+        "peak_elo_classical": 2851
+      },
+      "accolades": {
+        "years_world_champion": 15,
+        "years_ranked_world_no1": 20,
+        "age_became_world_champion": 22
+      },
+      "contextual": {
+        "world_champion_from": 1985,
+        "world_champion_until": 2000,
+        "note": "Youngest world champion at his time; founded PCA after split with FIDE in 1993"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 96,
+        "championship_rate": 90,
+        "longevity_index": 92,
+        "accolade_density": 93,
+        "opposition_quality": 93
+      }
+    },
+    {
+      "name": "Bobby Fischer",
+      "demographics": {
+        "birth_year": 1943,
+        "nationality": "American",
+        "title": "GM",
+        "era_start": 1958,
+        "style": "Universal / Precise"
+      },
+      "ratings": {
+        "peak_elo_classical": 2785
+      },
+      "accolades": {
+        "world_championship_wins_classical": 1,
+        "age_became_gm": 15,
+        "us_championship_wins": 8
+      },
+      "contextual": {
+        "world_champion_from": 1972,
+        "world_champion_until": 1975,
+        "note": "Forfeited title in 1975 by refusing to defend; only American world champion; won 1971 Candidates 6-0 twice"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 95,
+        "championship_rate": 88,
+        "longevity_index": 55,
+        "accolade_density": 92,
+        "opposition_quality": 88
+      }
+    },
+    {
+      "name": "Anatoly Karpov",
+      "demographics": {
+        "birth_year": 1951,
+        "nationality": "Soviet / Russian",
+        "title": "GM",
+        "era_start": 1969,
+        "style": "Positional / Strategic"
+      },
+      "ratings": {
+        "peak_elo_classical": 2780
+      },
+      "accolades": {
+        "world_championship_wins_classical": 2,
+        "years_ranked_world_no1": 10
+      },
+      "contextual": {
+        "world_champion_from_first_reign": 1975,
+        "world_champion_until_first_reign": 1985,
+        "world_champion_from_second_reign": 1993,
+        "world_champion_until_second_reign": 1999,
+        "note": "Won first title by default when Fischer refused to play; second reign under FIDE after Kasparov-FIDE split"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 89,
+        "championship_rate": 84,
+        "longevity_index": 88,
+        "accolade_density": 84,
+        "opposition_quality": 88
+      }
+    },
+    {
+      "name": "Viswanathan Anand",
+      "demographics": {
+        "birth_year": 1969,
+        "nationality": "Indian",
+        "title": "GM",
+        "era_start": 1987,
+        "style": "Universal / Tactical"
+      },
+      "ratings": {
+        "peak_elo_classical": 2817
+      },
+      "accolades": {
+        "world_championship_wins_classical": 5,
+        "years_ranked_world_no1": 6
+      },
+      "contextual": {
+        "world_champion_from": 2007,
+        "world_champion_until": 2013,
+        "note": "Won world title in three different formats (knockout, tournament, match); first Asian world chess champion"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 85,
+        "championship_rate": 86,
+        "longevity_index": 90,
+        "accolade_density": 80,
+        "opposition_quality": 90
+      }
+    },
+    {
+      "name": "Mikhail Botvinnik",
+      "demographics": {
+        "birth_year": 1911,
+        "nationality": "Soviet",
+        "title": "GM",
+        "era_start": 1931,
+        "style": "Positional / Scientific"
+      },
+      "accolades": {
+        "world_championship_wins_classical": 3,
+        "olympiad_golds": 7
+      },
+      "contextual": {
+        "world_champion_from": 1948,
+        "world_champion_until": 1963,
+        "note": "Won, lost, and regained title twice; known as 'Patriarch of Soviet chess'; trained Kasparov and Karpov"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 86,
+        "championship_rate": 80,
+        "longevity_index": 85,
+        "accolade_density": 78,
+        "opposition_quality": 80
+      }
+    },
+    {
+      "name": "Mikhail Tal",
+      "demographics": {
+        "birth_year": 1936,
+        "nationality": "Soviet / Latvian",
+        "title": "GM",
+        "era_start": 1953,
+        "style": "Tactical / Attacking"
+      },
+      "ratings": {
+        "peak_elo_classical": 2705
+      },
+      "accolades": {
+        "world_championship_wins_classical": 1
+      },
+      "contextual": {
+        "world_champion_from": 1960,
+        "world_champion_until": 1961,
+        "note": "Known as 'The Magician from Riga'; famous for speculative sacrifices; suffered severe health problems throughout career"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 82,
+        "championship_rate": 72,
+        "longevity_index": 65,
+        "accolade_density": 74,
+        "opposition_quality": 80
+      }
+    },
+    {
+      "name": "Vladimir Kramnik",
+      "demographics": {
+        "birth_year": 1975,
+        "nationality": "Russian",
+        "title": "GM",
+        "era_start": 1991,
+        "style": "Positional / Strategic"
+      },
+      "ratings": {
+        "peak_elo_classical": 2817
+      },
+      "accolades": {
+        "world_championship_wins_classical": 1,
+        "years_ranked_world_no1": 3
+      },
+      "contextual": {
+        "world_champion_from": 2000,
+        "world_champion_until": 2007,
+        "note": "Beat Kasparov with the Berlin Defence system; reunified the world title in 2006"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 83,
+        "championship_rate": 78,
+        "longevity_index": 80,
+        "accolade_density": 76,
+        "opposition_quality": 90
+      }
+    },
+    {
+      "name": "José Raúl Capablanca",
+      "demographics": {
+        "birth_year": 1888,
+        "nationality": "Cuban",
+        "era_start": 1900,
+        "style": "Endgame / Positional"
+      },
+      "accolades": {
+        "world_championship_wins_classical": 1
+      },
+      "contextual": {
+        "world_champion_from": 1921,
+        "world_champion_until": 1927,
+        "note": "Renowned for near-perfect endgame technique; went years without a single loss; called 'The Chess Machine'"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 88,
+        "championship_rate": 80,
+        "longevity_index": 78,
+        "accolade_density": 82,
+        "opposition_quality": 72
+      }
+    },
+    {
+      "name": "Emanuel Lasker",
+      "demographics": {
+        "birth_year": 1868,
+        "nationality": "German",
+        "era_start": 1889,
+        "style": "Psychological / Universal"
+      },
+      "accolades": {
+        "world_championship_wins_classical": 1,
+        "years_world_champion": 27
+      },
+      "contextual": {
+        "world_champion_from": 1894,
+        "world_champion_until": 1921,
+        "note": "Longest-reigning world chess champion in history at 27 years; known for psychological approach to the game"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 84,
+        "championship_rate": 82,
+        "longevity_index": 98,
+        "accolade_density": 70,
+        "opposition_quality": 68
+      }
+    }
+  ],
+
+  "boxing": [
+    {
+      "name": "Muhammad Ali",
+      "demographics": {
+        "birth_year": 1942,
+        "nationality": "American",
+        "weight_class": "Heavyweight",
+        "stance": "Orthodox",
+        "era_start": 1960
+      },
+      "record": {
+        "wins": 56,
+        "losses": 5,
+        "draws": 0,
+        "kos": 37,
+        "ko_percentage": 66.1
+      },
+      "accolades": {
+        "world_title_reigns": 3,
+        "title_defenses": 19,
+        "lineal_title_held": true,
+        "olympic_gold": true,
+        "olympic_gold_year": 1960
+      },
+      "contextual": {
+        "era": "1960s-1970s",
+        "note": "Stripped of title in 1967 for refusing Vietnam draft; returned to win title twice more"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 95,
+        "championship_rate": 90,
+        "longevity_index": 85,
+        "accolade_density": 90,
+        "opposition_quality": 92
+      }
+    },
+    {
+      "name": "Sugar Ray Robinson",
+      "demographics": {
+        "birth_year": 1921,
+        "nationality": "American",
+        "weight_class": "Welterweight / Middleweight",
+        "stance": "Orthodox",
+        "era_start": 1940
+      },
+      "record": {
+        "wins": 173,
+        "losses": 19,
+        "draws": 6,
+        "kos": 108,
+        "ko_percentage": 62.4
+      },
+      "accolades": {
+        "world_title_reigns": 6,
+        "lineal_title_held": true
+      },
+      "contextual": {
+        "era": "1940s-1960s",
+        "note": "Widely considered the greatest pound-for-pound boxer of all time; fought in two weight classes"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 97,
+        "championship_rate": 88,
+        "longevity_index": 88,
+        "accolade_density": 88,
+        "opposition_quality": 85
+      }
+    },
+    {
+      "name": "Joe Louis",
+      "demographics": {
+        "birth_year": 1914,
+        "nationality": "American",
+        "weight_class": "Heavyweight",
+        "stance": "Orthodox",
+        "era_start": 1934
+      },
+      "record": {
+        "wins": 66,
+        "losses": 3,
+        "draws": 0,
+        "kos": 52,
+        "ko_percentage": 78.8
+      },
+      "accolades": {
+        "world_title_reigns": 1,
+        "title_defenses": 25,
+        "lineal_title_held": true
+      },
+      "contextual": {
+        "world_champion_from": 1937,
+        "world_champion_until": 1949,
+        "era": "1930s-1940s",
+        "note": "25 title defenses is a heavyweight record; reign of 11 years 8 months is the longest in heavyweight history"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 92,
+        "championship_rate": 94,
+        "longevity_index": 86,
+        "accolade_density": 85,
+        "opposition_quality": 80
+      }
+    },
+    {
+      "name": "Rocky Marciano",
+      "demographics": {
+        "birth_year": 1923,
+        "nationality": "American",
+        "weight_class": "Heavyweight",
+        "stance": "Orthodox",
+        "era_start": 1947
+      },
+      "record": {
+        "wins": 49,
+        "losses": 0,
+        "draws": 0,
+        "kos": 43,
+        "ko_percentage": 87.8
+      },
+      "accolades": {
+        "world_title_reigns": 1,
+        "title_defenses": 6,
+        "lineal_title_held": true
+      },
+      "contextual": {
+        "world_champion_from": 1952,
+        "world_champion_until": 1956,
+        "era": "1950s",
+        "note": "Only heavyweight champion to retire undefeated; highest KO percentage among heavyweight champions"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 88,
+        "championship_rate": 100,
+        "longevity_index": 65,
+        "accolade_density": 82,
+        "opposition_quality": 75
+      }
+    },
+    {
+      "name": "Mike Tyson",
+      "demographics": {
+        "birth_year": 1966,
+        "nationality": "American",
+        "weight_class": "Heavyweight",
+        "stance": "Orthodox",
+        "era_start": 1985
+      },
+      "record": {
+        "wins": 50,
+        "losses": 6,
+        "draws": 0,
+        "kos": 44,
+        "ko_percentage": 88.0
+      },
+      "accolades": {
+        "world_title_reigns": 1,
+        "sanctioning_bodies_unified": 3,
+        "lineal_title_held": true
+      },
+      "contextual": {
+        "era": "1985-2005",
+        "note": "Youngest heavyweight champion in history at 20 years old; unified WBA, WBC and IBF belts"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 90,
+        "championship_rate": 80,
+        "longevity_index": 65,
+        "accolade_density": 85,
+        "opposition_quality": 82
+      }
+    },
+    {
+      "name": "Floyd Mayweather Jr.",
+      "demographics": {
+        "birth_year": 1977,
+        "nationality": "American",
+        "weight_class": "Super Featherweight to Super Welterweight",
+        "stance": "Orthodox",
+        "era_start": 1996
+      },
+      "record": {
+        "wins": 50,
+        "losses": 0,
+        "draws": 0,
+        "kos": 27,
+        "ko_percentage": 54.0
+      },
+      "accolades": {
+        "world_title_reigns": 5,
+        "world_titles_in_weight_classes": 5,
+        "lineal_title_held": true,
+        "olympic_bronze": true,
+        "olympic_bronze_year": 1996
+      },
+      "contextual": {
+        "era": "1996-2017",
+        "note": "Won world titles in 5 weight classes; retired with a perfect 50-0 record"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 93,
+        "championship_rate": 100,
+        "longevity_index": 88,
+        "accolade_density": 88,
+        "opposition_quality": 88
+      }
+    },
+    {
+      "name": "Manny Pacquiao",
+      "demographics": {
+        "birth_year": 1978,
+        "nationality": "Filipino",
+        "weight_class": "Flyweight to Super Welterweight",
+        "stance": "Southpaw",
+        "era_start": 1995
+      },
+      "record": {
+        "wins": 62,
+        "losses": 8,
+        "draws": 2,
+        "kos": 39,
+        "ko_percentage": 62.9
+      },
+      "accolades": {
+        "world_title_reigns": 8,
+        "world_titles_in_weight_classes": 8
+      },
+      "contextual": {
+        "era": "1995-2021",
+        "note": "Only boxer to win world titles in 8 different weight classes; also served as a Senator in the Philippines"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 88,
+        "championship_rate": 82,
+        "longevity_index": 86,
+        "accolade_density": 86,
+        "opposition_quality": 86
+      }
+    },
+    {
+      "name": "Marvin Hagler",
+      "demographics": {
+        "birth_year": 1954,
+        "nationality": "American",
+        "weight_class": "Middleweight",
+        "stance": "Southpaw / Switch",
+        "era_start": 1973
+      },
+      "record": {
+        "wins": 62,
+        "losses": 3,
+        "draws": 2,
+        "kos": 52,
+        "ko_percentage": 83.9
+      },
+      "accolades": {
+        "world_title_reigns": 1,
+        "title_defenses": 12,
+        "lineal_title_held": true
+      },
+      "contextual": {
+        "world_champion_from": 1980,
+        "world_champion_until": 1987,
+        "era": "1970s-1980s",
+        "note": "Undisputed middleweight champion for 7 years; legally changed his first name to 'Marvelous'"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 90,
+        "championship_rate": 88,
+        "longevity_index": 82,
+        "accolade_density": 84,
+        "opposition_quality": 88
+      }
+    },
+    {
+      "name": "Roberto Duran",
+      "demographics": {
+        "birth_year": 1951,
+        "nationality": "Panamanian",
+        "weight_class": "Lightweight to Super Middleweight",
+        "stance": "Orthodox",
+        "era_start": 1967
+      },
+      "record": {
+        "wins": 103,
+        "losses": 16,
+        "draws": 0,
+        "kos": 70,
+        "ko_percentage": 67.9
+      },
+      "accolades": {
+        "world_title_reigns": 4,
+        "world_titles_in_weight_classes": 4,
+        "lineal_title_held": true
+      },
+      "contextual": {
+        "era": "1967-2001",
+        "note": "Fought professionally from 1967 to 2001 (age 16 to 50); won world titles across 4 weight classes over 30+ year career"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 88,
+        "championship_rate": 80,
+        "longevity_index": 98,
+        "accolade_density": 80,
+        "opposition_quality": 86
+      }
+    },
+    {
+      "name": "Sugar Ray Leonard",
+      "demographics": {
+        "birth_year": 1956,
+        "nationality": "American",
+        "weight_class": "Welterweight to Light Heavyweight",
+        "stance": "Orthodox",
+        "era_start": 1977
+      },
+      "record": {
+        "wins": 36,
+        "losses": 3,
+        "draws": 1,
+        "kos": 25,
+        "ko_percentage": 69.4
+      },
+      "accolades": {
+        "world_title_reigns": 5,
+        "world_titles_in_weight_classes": 5,
+        "lineal_title_held": true,
+        "olympic_gold": true,
+        "olympic_gold_year": 1976
+      },
+      "contextual": {
+        "era": "1977-1997",
+        "note": "Won world titles in 5 weight classes; beat Duran, Hagler, and Hearns — three of the greatest middleweights ever"
+      },
+      "cross_sport_metrics": {
+        "dominance_score": 87,
+        "championship_rate": 86,
+        "longevity_index": 75,
+        "accolade_density": 85,
+        "opposition_quality": 92
+      }
+    }
+  ]
+}
