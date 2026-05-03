@@ -1,13 +1,15 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
+import * as d3 from "d3";
 import { METRICS } from "../../data/attributeMap";
 
 const SPORTS = [
@@ -37,6 +39,7 @@ export default function Stage5_Experimental({
     METRICS.map((m) => m.key),
   );
   const [focusedMetric, setFocusedMetric] = useState(null);
+  const [viewMode, setViewMode] = useState("stacked");
 
   const activeMetrics = useMemo(
     () => METRICS.filter((m) => selectedMetrics.includes(m.key)),
@@ -147,6 +150,19 @@ export default function Stage5_Experimental({
     setFocusedMetric(metricKey);
   };
 
+  const toggleMetricFilter = (metricKey) => {
+    setSelectedMetrics((prev) => {
+      if (prev.length === 1 && prev.includes(metricKey)) {
+        // Currently filtering by this metric, so show all
+        return METRICS.map((m) => m.key);
+      } else {
+        // Filter to only this metric
+        return [metricKey];
+      }
+    });
+    setFocusedMetric(null);
+  };
+
   const clearCategoryFilters = () => {
     setSelectedMetrics(METRICS.map((metric) => metric.key));
     setFocusedMetric(null);
@@ -189,7 +205,7 @@ export default function Stage5_Experimental({
               backgroundClip: "text",
             }}
           >
-            Stage 3: Experimental
+            Experimental
           </h2>
           <p style={{ margin: 0, color: "#6b7280", fontSize: 14 }}>
             Horizontal stacked bars ranked by overall score. Tweak filters to
@@ -399,54 +415,97 @@ export default function Stage5_Experimental({
             overflow: "hidden",
           }}
         >
-          {activeMetrics.length === 0 ? (
-            <p style={{ color: "#6b7280", fontSize: 14, padding: 12 }}>
-              Select at least one category to render stacked values.
-            </p>
-          ) : totalShown === 0 ? (
-            <p style={{ color: "#6b7280", fontSize: 14, padding: 12 }}>
-              No athletes match the selected sport filters.
-            </p>
-          ) : groupBySport ? (
-            <div style={{ display: "grid", gap: 28 }}>
-              {groupedData.map((group) => (
-                <section
-                  key={group.sport.key}
-                  style={{
-                    border: "1px solid #232323",
-                    borderRadius: 12,
-                    padding: 14,
-                    marginBottom: 10,
-                  }}
-                >
-                  <h3
+          <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+            <button
+              onClick={() => setViewMode("stacked")}
+              style={{
+                padding: "6px 10px",
+                borderRadius: 8,
+                border: `1px solid ${viewMode === "stacked" ? "#9ca3af" : "#2f2f2f"}`,
+                background: viewMode === "stacked" ? "#111827" : "transparent",
+                color: viewMode === "stacked" ? "#fff" : "#9ca3af",
+                cursor: "pointer",
+              }}
+            >
+              Stacked view
+            </button>
+            <button
+              onClick={() => setViewMode("compare")}
+              style={{
+                padding: "6px 10px",
+                borderRadius: 8,
+                border: `1px solid ${viewMode === "compare" ? "#9ca3af" : "#2f2f2f"}`,
+                background: viewMode === "compare" ? "#111827" : "transparent",
+                color: viewMode === "compare" ? "#fff" : "#9ca3af",
+                cursor: "pointer",
+              }}
+            >
+              Compare view
+            </button>
+          </div>
+
+          {viewMode === "stacked" ? (
+            activeMetrics.length === 0 ? (
+              <p style={{ color: "#6b7280", fontSize: 14, padding: 12 }}>
+                Select at least one category to render stacked values.
+              </p>
+            ) : totalShown === 0 ? (
+              <p style={{ color: "#6b7280", fontSize: 14, padding: 12 }}>
+                No athletes match the selected sport filters.
+              </p>
+            ) : groupBySport ? (
+              <div style={{ display: "grid", gap: 28 }}>
+                {groupedData.map((group) => (
+                  <section
+                    key={group.sport.key}
                     style={{
-                      margin: "0 0 8px",
-                      fontSize: 15,
-                      color: group.sport.color,
-                      fontWeight: 700,
+                      border: "1px solid #232323",
+                      borderRadius: 12,
+                      padding: 14,
+                      marginBottom: 24,
                     }}
                   >
-                    {group.sport.label}
-                  </h3>
-                  <StackedAthleteChart
-                    rows={group.rows}
-                    activeMetrics={activeMetrics}
-                    focusedMetric={focusedMetric}
-                    onMetricFocus={toggleMetricFocus}
-                    onMetricIsolate={isolateMetric}
-                  />
-                </section>
-              ))}
-            </div>
+                    <h3
+                      style={{
+                        margin: "0 0 8px",
+                        fontSize: 15,
+                        color: group.sport.color,
+                        fontWeight: 700,
+                      }}
+                    >
+                      {group.sport.label}
+                    </h3>
+                    <StackedAthleteChart
+                      rows={group.rows}
+                      activeMetrics={activeMetrics}
+                      focusedMetric={focusedMetric}
+                      onMetricFocus={toggleMetricFocus}
+                      onMetricIsolate={toggleMetricFilter}
+                      selectedMetrics={selectedMetrics}
+                    />
+                  </section>
+                ))}
+              </div>
+            ) : (
+              <StackedAthleteChart
+                rows={chartData}
+                activeMetrics={activeMetrics}
+                focusedMetric={focusedMetric}
+                onMetricFocus={toggleMetricFocus}
+                onMetricIsolate={toggleMetricFilter}
+                selectedMetrics={selectedMetrics}
+              />
+            )
           ) : (
-            <StackedAthleteChart
-              rows={chartData}
-              activeMetrics={activeMetrics}
-              focusedMetric={focusedMetric}
-              onMetricFocus={toggleMetricFocus}
-              onMetricIsolate={isolateMetric}
-            />
+            <div style={{ display: "grid", gap: 18 }}>
+              <CompareView
+                athletes={rankedAthletes.filter((a) =>
+                  selectedSports.includes(a.sport),
+                )}
+                metrics={METRICS}
+                selectedSports={selectedSports}
+              />
+            </div>
           )}
         </main>
       </div>
@@ -526,6 +585,7 @@ function StackedAthleteChart({
   focusedMetric,
   onMetricFocus,
   onMetricIsolate,
+  selectedMetrics,
 }) {
   const chartHeight = Math.max(320, rows.length * 34 + 30);
   const rowById = useMemo(
@@ -533,8 +593,27 @@ function StackedAthleteChart({
     [rows],
   );
 
+  const lastClickRef = useMemo(() => ({ metric: null, time: 0 }), []);
+
+  const handleSegmentClick = (metricKey) => {
+    const now = Date.now();
+    const timeSinceLastClick = now - lastClickRef.time;
+
+    if (lastClickRef.metric === metricKey && timeSinceLastClick < 300) {
+      // Double click detected
+      onMetricIsolate(metricKey);
+      lastClickRef.metric = null;
+      lastClickRef.time = 0;
+    } else {
+      // Single click
+      onMetricFocus(metricKey);
+      lastClickRef.metric = metricKey;
+      lastClickRef.time = now;
+    }
+  };
+
   return (
-    <div style={{ width: "100%", height: chartHeight, paddingBottom: 14 }}>
+    <div style={{ width: "100%", height: chartHeight, paddingBottom: 28 }}>
       <ResponsiveContainer>
         <BarChart
           data={rows}
@@ -624,10 +703,16 @@ function StackedAthleteChart({
               isAnimationActive
               animationDuration={620}
               animationEasing="ease-in-out"
-              onClick={() => onMetricFocus(metric.key)}
-              onDoubleClick={() => onMetricIsolate(metric.key)}
               style={{ cursor: "pointer" }}
-            />
+            >
+              {rows.map((row) => (
+                <Cell
+                  key={`${row.id}-${metric.key}`}
+                  onClick={() => handleSegmentClick(metric.key)}
+                  style={{ cursor: "pointer" }}
+                />
+              ))}
+            </Bar>
           ))}
         </BarChart>
       </ResponsiveContainer>
@@ -707,4 +792,334 @@ function ControlSection({ title, children }) {
 
 function round1(value) {
   return Math.round(value * 10) / 10;
+}
+
+function CompareView({ athletes, metrics, selectedSports }) {
+  return (
+    <div style={{ display: "grid", gap: 18 }}>
+      <BubbleCompare
+        athletes={athletes}
+        metrics={metrics}
+        selectedSports={selectedSports}
+      />
+      <HeatmapCompare
+        athletes={athletes}
+        metrics={metrics}
+        selectedSports={selectedSports}
+      />
+    </div>
+  );
+}
+
+function BubbleCompare({ athletes, metrics, selectedSports }) {
+  const containerRef = useRef(null);
+  const svgRef = useRef(null);
+  const [width, setWidth] = useState(700);
+  const [xKey, setXKey] = useState(metrics[0]?.key || "overall");
+  const [yKey, setYKey] = useState(
+    metrics[1]?.key || metrics[0]?.key || "overall",
+  );
+  const [sizeKey, setSizeKey] = useState("none");
+  const [tooltip, setTooltip] = useState(null);
+  const [highlighted, setHighlighted] = useState(null);
+
+  useEffect(() => {
+    const ro = new ResizeObserver(([e]) => setWidth(e.contentRect.width));
+    if (containerRef.current) ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!svgRef.current) return;
+    const data = athletes;
+    const height = 360;
+    const margin = { top: 24, right: 16, bottom: 50, left: 60 };
+    const W = Math.max(320, width - margin.left - margin.right);
+    const H = height - margin.top - margin.bottom;
+
+    d3.select(svgRef.current).selectAll("*").remove();
+    const svg = d3
+      .select(svgRef.current)
+      .attr("width", width)
+      .attr("height", height);
+    const g = svg
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleLinear().domain([0, 1]).range([0, W]);
+    const y = d3.scaleLinear().domain([0, 1]).range([H, 0]);
+
+    const getVal = (d, key) =>
+      key === "overall" ? (d.overallScore ?? 0) : (d.breakdown?.[key] ?? 0);
+    const sizeValues =
+      sizeKey === "none"
+        ? data.map(() => 0.5)
+        : data.map((d) => getVal(d, sizeKey));
+    const r = d3.scaleLinear().domain(d3.extent(sizeValues)).range([5, 28]);
+
+    // axes
+    g.append("g")
+      .attr("transform", `translate(0,${H})`)
+      .call(d3.axisBottom(x).ticks(5).tickFormat(d3.format(".0%")))
+      .selectAll("text")
+      .style("fill", "#6b7280")
+      .style("font-size", "10px");
+    g.append("g")
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
+      .selectAll("text")
+      .style("fill", "#6b7280")
+      .style("font-size", "10px");
+
+    // bubbles
+    const circles = g
+      .selectAll("circle")
+      .data(data)
+      .enter()
+      .append("circle")
+      .attr("cx", (d) => x(getVal(d, xKey)))
+      .attr("cy", (d) => y(getVal(d, yKey)))
+      .attr("r", 0)
+      .attr(
+        "fill",
+        (d) => SPORTS.find((s) => s.key === d.sport)?.color || "#777",
+      )
+      .attr("fill-opacity", (d) =>
+        highlighted ? (d.id === highlighted ? 0.95 : 0.2) : 0.7,
+      )
+      .attr("stroke", (d) =>
+        d.id === highlighted
+          ? "#fff"
+          : SPORTS.find((s) => s.key === d.sport)?.color,
+      )
+      .attr("stroke-width", (d) => (d.id === highlighted ? 2 : 0.6))
+      .style("cursor", "pointer")
+      .on("mouseenter", function (event, d) {
+        const rect = svgRef.current.getBoundingClientRect();
+        setTooltip({
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top,
+          athlete: d,
+        });
+        setHighlighted(d.id);
+      })
+      .on("mouseleave", () => {
+        setTooltip(null);
+        setHighlighted(null);
+      })
+      .on("click", (_, d) =>
+        setHighlighted((prev) => (prev === d.id ? null : d.id)),
+      );
+
+    circles
+      .transition()
+      .duration(600)
+      .attr("r", (d) => (sizeKey === "none" ? 10 : r(getVal(d, sizeKey))));
+
+    // labels
+    svg
+      .append("text")
+      .attr("x", margin.left + W / 2)
+      .attr("y", height - 6)
+      .attr("text-anchor", "middle")
+      .attr("fill", "#6b7280")
+      .attr("font-size", 11)
+      .text(
+        xKey === "overall"
+          ? "Overall score"
+          : metrics.find((m) => m.key === xKey)?.label || xKey,
+      );
+    svg
+      .append("text")
+      .attr("x", -(margin.top + H / 2))
+      .attr("y", 14)
+      .attr("transform", "rotate(-90)")
+      .attr("text-anchor", "middle")
+      .attr("fill", "#6b7280")
+      .attr("font-size", 11)
+      .text(
+        yKey === "overall"
+          ? "Overall score"
+          : metrics.find((m) => m.key === yKey)?.label || yKey,
+      );
+  }, [athletes, width, xKey, yKey, sizeKey, highlighted, metrics]);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        backgroundColor: "#1a1a1a",
+        borderRadius: 12,
+        border: "1px solid #232323",
+        padding: 12,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          alignItems: "center",
+          marginBottom: 10,
+        }}
+      >
+        <div style={{ color: "#9ca3af", fontSize: 13 }}>X:</div>
+        <select
+          value={xKey}
+          onChange={(e) => setXKey(e.target.value)}
+          style={{ padding: 6, borderRadius: 8 }}
+        >
+          <option value="overall">Overall score</option>
+          {metrics.map((m) => (
+            <option key={m.key} value={m.key}>
+              {m.label}
+            </option>
+          ))}
+        </select>
+        <div style={{ color: "#9ca3af", fontSize: 13 }}>Y:</div>
+        <select
+          value={yKey}
+          onChange={(e) => setYKey(e.target.value)}
+          style={{ padding: 6, borderRadius: 8 }}
+        >
+          <option value="overall">Overall score</option>
+          {metrics.map((m) => (
+            <option key={m.key} value={m.key}>
+              {m.label}
+            </option>
+          ))}
+        </select>
+        <div style={{ color: "#9ca3af", fontSize: 13 }}>Size:</div>
+        <select
+          value={sizeKey}
+          onChange={(e) => setSizeKey(e.target.value)}
+          style={{ padding: 6, borderRadius: 8 }}
+        >
+          <option value="none">None</option>
+          <option value="overall">Overall score</option>
+          {metrics.map((m) => (
+            <option key={m.key} value={m.key}>
+              {m.label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <svg ref={svgRef} style={{ width: "100%", overflow: "visible" }} />
+      {tooltip && (
+        <div
+          style={{
+            position: "absolute",
+            left: tooltip.x + 12,
+            top: tooltip.y - 10,
+            backgroundColor: "#0f0f0f",
+            border: "1px solid #222",
+            borderRadius: 8,
+            padding: 10,
+            fontSize: 12,
+            pointerEvents: "none",
+          }}
+        >
+          <div style={{ color: "#f3f4f6", fontWeight: 700 }}>
+            {tooltip.athlete.name}
+          </div>
+          <div style={{ color: "#9ca3af", fontSize: 12 }}>
+            {tooltip.athlete.sport}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function HeatmapCompare({ athletes, metrics, selectedSports }) {
+  const sports = SPORTS.filter((s) => selectedSports.includes(s.key));
+
+  const averages = metrics.map((metric) => {
+    const vals = sports.map((sport) => {
+      const group = athletes.filter((a) => a.sport === sport.key);
+      if (!group.length) return 0;
+      const avg =
+        group.reduce((sum, a) => sum + (a.breakdown?.[metric.key] || 0), 0) /
+        group.length;
+      return avg;
+    });
+
+    const mean = vals.reduce((s, v) => s + v, 0) / Math.max(1, vals.length);
+    // deviations that sum to zero across sports
+    const devs = vals.map((v) => v - mean);
+    const maxAbs = Math.max(...devs.map((d) => Math.abs(d)), 1e-6);
+    const norm = devs.map((d) => Math.max(-1, Math.min(1, d / maxAbs)));
+    return { metric, vals, devs, norm, maxAbs };
+  });
+
+  const colorScale = d3
+    .scaleLinear()
+    .domain([-1, 0, 1])
+    .range(["#ffb3b3", "#ffffff", "#86efac"]);
+
+  return (
+    <div
+      style={{
+        backgroundColor: "#1a1a1a",
+        borderRadius: 12,
+        border: "1px solid #232323",
+        padding: 12,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          alignItems: "center",
+          marginBottom: 8,
+        }}
+      >
+        <div style={{ color: "#9ca3af", fontWeight: 700 }}>
+          Heatmap — mean-centered deviations (sum = 0 per category)
+        </div>
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: `160px repeat(${sports.length}, 1fr)`,
+          gap: 6,
+          alignItems: "center",
+        }}
+      >
+        <div />
+        {sports.map((s) => (
+          <div
+            key={s.key}
+            style={{ color: s.color, fontSize: 13, fontWeight: 700 }}
+          >
+            {s.label}
+          </div>
+        ))}
+
+        {averages.map((row) => (
+          <div key={`row-${row.metric.key}`} style={{ display: "contents" }}>
+            <div style={{ color: "#d1d5db", fontSize: 13, padding: "6px 8px" }}>
+              {row.metric.label}
+            </div>
+            {row.devs.map((d, i) => (
+              <div
+                key={`${row.metric.key}-${i}`}
+                style={{
+                  background: colorScale(row.norm[i]),
+                  padding: 8,
+                  borderRadius: 6,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#111",
+                }}
+              >
+                <div style={{ fontSize: 12, fontWeight: 700 }}>
+                  {d.toFixed(2)}
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
