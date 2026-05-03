@@ -837,116 +837,195 @@ function BubbleCompare({ athletes, metrics, selectedSports }) {
     const W = Math.max(320, width - margin.left - margin.right);
     const H = height - margin.top - margin.bottom;
 
-    d3.select(svgRef.current).selectAll("*").remove();
     const svg = d3
       .select(svgRef.current)
       .attr("width", width)
       .attr("height", height);
-    const g = svg
-      .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleLinear().domain([0, 1]).range([0, W]);
-    const y = d3.scaleLinear().domain([0, 1]).range([H, 0]);
+    // root group (create once)
+    let g = d3.select(svgRef.current).select("g.bubble-root");
+    if (g.empty()) {
+      g = svg
+        .append("g")
+        .attr("class", "bubble-root")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+      g.append("g").attr("class", "x-axis");
+      g.append("g").attr("class", "y-axis");
+      g.append("g").attr("class", "grid");
+      g.append("g").attr("class", "circles");
+    } else {
+      g.attr("transform", `translate(${margin.left},${margin.top})`);
+    }
 
     const getVal = (d, key) =>
       key === "overall" ? (d.overallScore ?? 0) : (d.breakdown?.[key] ?? 0);
+    // compute pixel radius scale and pad domains so bubbles don't cross axes
+    const xBase = d3.scaleLinear().domain([0, 1]).range([0, W]);
+    const yBase = d3.scaleLinear().domain([0, 1]).range([H, 0]);
+
     const sizeValues =
       sizeKey === "none"
         ? data.map(() => 0.5)
         : data.map((d) => getVal(d, sizeKey));
-    const r = d3.scaleLinear().domain(d3.extent(sizeValues)).range([5, 28]);
 
-    // axes
-    g.append("g")
+    const r = d3.scaleLinear().domain(d3.extent(sizeValues)).range([5, 28]);
+    const rMaxPx = sizeKey === "none" ? 10 : r.range()[1] || 28;
+    const padX = Math.min(0.45, rMaxPx / Math.max(1, W));
+    const padY = Math.min(0.45, rMaxPx / Math.max(1, H));
+    const x = d3
+      .scaleLinear()
+      .domain([padX, 1 - padX])
+      .range([0, W]);
+    const y = d3
+      .scaleLinear()
+      .domain([padY, 1 - padY])
+      .range([H, 0]);
+
+    // update axes
+    g.select(".x-axis")
       .attr("transform", `translate(0,${H})`)
+      .transition()
+      .duration(600)
       .call(d3.axisBottom(x).ticks(5).tickFormat(d3.format(".0%")))
       .selectAll("text")
       .style("fill", "#6b7280")
       .style("font-size", "10px");
-    g.append("g")
+    g.select(".y-axis")
+      .transition()
+      .duration(600)
       .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
       .selectAll("text")
       .style("fill", "#6b7280")
       .style("font-size", "10px");
 
-    // bubbles
-    const circles = g
-      .selectAll("circle")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("cx", (d) => x(getVal(d, xKey)))
-      .attr("cy", (d) => y(getVal(d, yKey)))
-      .attr("r", 0)
-      .attr(
-        "fill",
-        (d) => SPORTS.find((s) => s.key === d.sport)?.color || "#777",
-      )
-      .attr("fill-opacity", (d) =>
-        highlighted ? (d.id === highlighted ? 0.95 : 0.2) : 0.7,
-      )
-      .attr("stroke", (d) =>
-        d.id === highlighted
-          ? "#fff"
-          : SPORTS.find((s) => s.key === d.sport)?.color,
-      )
-      .attr("stroke-width", (d) => (d.id === highlighted ? 2 : 0.6))
-      .style("cursor", "pointer")
-      .on("mouseenter", function (event, d) {
-        const rect = svgRef.current.getBoundingClientRect();
-        setTooltip({
-          x: event.clientX - rect.left,
-          y: event.clientY - rect.top,
-          athlete: d,
-        });
-        setHighlighted(d.id);
-      })
-      .on("mouseleave", () => {
-        setTooltip(null);
-        setHighlighted(null);
-      })
-      .on("click", (_, d) =>
-        setHighlighted((prev) => (prev === d.id ? null : d.id)),
-      );
+    // remove grid lines (no grid requested)
+    g.selectAll(".grid").remove();
 
-    circles
-      .transition()
-      .duration(600)
-      .attr("r", (d) => (sizeKey === "none" ? 10 : r(getVal(d, sizeKey))));
+    // join/update circles
+    const circlesG = g.select(".circles");
+    const sel = circlesG.selectAll("circle").data(data, (d) => d.id);
 
-    // labels
-    svg
-      .append("text")
-      .attr("x", margin.left + W / 2)
-      .attr("y", height - 6)
-      .attr("text-anchor", "middle")
-      .attr("fill", "#6b7280")
-      .attr("font-size", 11)
-      .text(
-        xKey === "overall"
-          ? "Overall score"
-          : metrics.find((m) => m.key === xKey)?.label || xKey,
-      );
-    svg
-      .append("text")
-      .attr("x", -(margin.top + H / 2))
-      .attr("y", 14)
-      .attr("transform", "rotate(-90)")
-      .attr("text-anchor", "middle")
-      .attr("fill", "#6b7280")
-      .attr("font-size", 11)
-      .text(
-        yKey === "overall"
-          ? "Overall score"
-          : metrics.find((m) => m.key === yKey)?.label || yKey,
-      );
+    sel.join(
+      (enter) => {
+        const e = enter
+          .append("circle")
+          .attr("cx", (d) => x(getVal(d, xKey)))
+          .attr("cy", (d) => y(getVal(d, yKey)))
+          .attr("r", 0)
+          .attr(
+            "fill",
+            (d) => SPORTS.find((s) => s.key === d.sport)?.color || "#777",
+          )
+          .attr("fill-opacity", (d) =>
+            highlighted ? (d.id === highlighted ? 0.95 : 0.2) : 0.7,
+          )
+          .attr("stroke", (d) =>
+            d.id === highlighted
+              ? "#fff"
+              : SPORTS.find((s) => s.key === d.sport)?.color,
+          )
+          .attr("stroke-width", (d) => (d.id === highlighted ? 2 : 0.6))
+          .style("cursor", "pointer")
+          .on("mouseenter", function (event, d) {
+            const rect = containerRef.current
+              ? containerRef.current.getBoundingClientRect()
+              : svgRef.current.getBoundingClientRect();
+            setTooltip({
+              x: event.clientX - rect.left,
+              y: event.clientY - rect.top,
+              athlete: d,
+            });
+            setHighlighted(d.id);
+          })
+          .on("mouseleave", () => {
+            setTooltip(null);
+            setHighlighted(null);
+          })
+          .on("click", (_, d) =>
+            setHighlighted((prev) => (prev === d.id ? null : d.id)),
+          );
+
+        e.transition()
+          .duration(700)
+          .attr("r", (d) => (sizeKey === "none" ? 10 : r(getVal(d, sizeKey))));
+        return e;
+      },
+      (update) => {
+        update
+          .transition()
+          .duration(700)
+          .attr("cx", (d) => x(getVal(d, xKey)))
+          .attr("cy", (d) => y(getVal(d, yKey)))
+          .attr("r", (d) => (sizeKey === "none" ? 10 : r(getVal(d, sizeKey))))
+          .attr("fill-opacity", (d) =>
+            highlighted ? (d.id === highlighted ? 0.95 : 0.2) : 0.7,
+          )
+          .attr("stroke", (d) =>
+            d.id === highlighted
+              ? "#fff"
+              : SPORTS.find((s) => s.key === d.sport)?.color,
+          )
+          .attr("stroke-width", (d) => (d.id === highlighted ? 2 : 0.6));
+        return update;
+      },
+      (exit) => exit.transition().duration(300).attr("r", 0).remove(),
+    );
+
+    // axis labels: create or update existing to avoid duplicates
+    const xLabelText =
+      xKey === "overall"
+        ? "Overall score"
+        : metrics.find((m) => m.key === xKey)?.label || xKey;
+    const yLabelText =
+      yKey === "overall"
+        ? "Overall score"
+        : metrics.find((m) => m.key === yKey)?.label || yKey;
+
+    const existingX = svg.selectAll(".x-label");
+    if (existingX.empty()) {
+      svg
+        .append("text")
+        .attr("class", "x-label")
+        .attr("x", margin.left + W / 2)
+        .attr("y", height - 6)
+        .attr("text-anchor", "middle")
+        .attr("fill", "#6b7280")
+        .attr("font-size", 11)
+        .style("pointer-events", "none")
+        .text(xLabelText);
+    } else {
+      existingX
+        .attr("x", margin.left + W / 2)
+        .attr("y", height - 6)
+        .text(xLabelText);
+    }
+
+    const existingY = svg.selectAll(".y-label");
+    if (existingY.empty()) {
+      svg
+        .append("text")
+        .attr("class", "y-label")
+        .attr("x", -(margin.top + H / 2))
+        .attr("y", 14)
+        .attr("transform", "rotate(-90)")
+        .attr("text-anchor", "middle")
+        .attr("fill", "#6b7280")
+        .attr("font-size", 11)
+        .style("pointer-events", "none")
+        .text(yLabelText);
+    } else {
+      existingY
+        .attr("x", -(margin.top + H / 2))
+        .attr("y", 14)
+        .text(yLabelText);
+    }
   }, [athletes, width, xKey, yKey, sizeKey, highlighted, metrics]);
 
   return (
     <div
       ref={containerRef}
       style={{
+        position: "relative",
         backgroundColor: "#1a1a1a",
         borderRadius: 12,
         border: "1px solid #232323",
