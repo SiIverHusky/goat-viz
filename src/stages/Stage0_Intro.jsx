@@ -95,7 +95,7 @@ export default function Stage0_Intro({ goTo }) {
         style={{
           opacity: phase >= 3 ? 1 : 0,
           transform: phase >= 3 ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'opacity 400ms ease, transform 400ms ease',
+          transition: 'opacity 400ms ease, transform 400ms ease, box-shadow 300ms ease',
           padding: '16px 48px',
           background: 'linear-gradient(135deg, #F59E0B, #FBBF24)',
           border: 'none', borderRadius: 50,
@@ -103,7 +103,6 @@ export default function Stage0_Intro({ goTo }) {
           fontFamily: 'DM Sans, sans-serif', fontWeight: 700,
           fontSize: 18, cursor: 'pointer',
           boxShadow: '0 0 40px rgba(245,158,11,0.4)',
-          transition: 'all 300ms ease',
         }}
         onMouseEnter={e => {
           e.currentTarget.style.transform = 'scale(1.05)';

@@ -120,9 +120,24 @@ export default function SidePanel({ selectedTags, setSelectedTags, weights, setW
               Metric Weights
             </h3>
             <p style={{ color: '#4b5563', fontSize: 11, margin: 0 }}>
-              Drag to adjust · click to add/remove
+              Drag sliders to weight · click labels to add/remove
             </p>
           </div>
+
+          {selectedMetrics.length === 0 && (
+            <div style={{
+              marginBottom: 14,
+              padding: '10px 12px',
+              borderRadius: 10,
+              border: '1px solid #4a3211',
+              background: 'rgba(245,158,11,0.08)',
+              color: '#fbbf24',
+              fontSize: 11,
+              lineHeight: 1.4,
+            }}>
+              Start by selecting a value below to personalize the ranking.
+            </div>
+          )}
 
           {/* Selected metrics */}
           {selectedMetrics.length > 0 && (
@@ -136,7 +151,7 @@ export default function SidePanel({ selectedTags, setSelectedTags, weights, setW
                   metric={m}
                   value={weights[m.key] ?? 0}
                   onChange={v => handleSliderChange(m.key, v, weights, setWeights, selectedTags)}
-                  onRemove={() => handleRemoveMetric(m.key, selectedTags, setSelectedTags, weights, setWeights)}
+                  onToggle={() => handleRemoveMetric(m.key, selectedTags, setSelectedTags, weights, setWeights)}
                 />
               ))}
             </div>
@@ -187,42 +202,37 @@ export default function SidePanel({ selectedTags, setSelectedTags, weights, setW
   );
 }
 
-function MetricSlider({ metric, value, onChange, onRemove }) {
+function MetricSlider({ metric, value, onChange, onToggle }) {
   const pct = Math.round(value * 100);
 
   return (
     <div style={{ marginBottom: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-        <span style={{
-          fontSize: 12, fontWeight: 600,
-          color: metric.color,
-          fontFamily: 'DM Sans, sans-serif',
-        }}>
-          {metric.label}
-        </span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{
-            fontSize: 11, fontWeight: 700,
+        <button
+          type="button"
+          onClick={onToggle}
+          title="Disable metric"
+          style={{
+            fontSize: 12,
+            fontWeight: 700,
             color: metric.color,
-            fontFamily: 'DM Mono, monospace',
-            minWidth: 32, textAlign: 'right',
-          }}>
-            {pct}%
-          </span>
-          <button
-            onClick={onRemove}
-            title="Remove metric"
-            style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              color: '#4b5563', fontSize: 14, padding: '0 2px',
-              lineHeight: 1, transition: 'color 150ms ease',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.color = '#9ca3af'; }}
-            onMouseLeave={e => { e.currentTarget.style.color = '#4b5563'; }}
-          >
-            ×
-          </button>
-        </div>
+            fontFamily: 'DM Sans, sans-serif',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+          }}
+        >
+          {metric.label}
+        </button>
+        <span style={{
+          fontSize: 11, fontWeight: 700,
+          color: metric.color,
+          fontFamily: 'DM Mono, monospace',
+          minWidth: 32, textAlign: 'right',
+        }}>
+          {pct}%
+        </span>
       </div>
 
       <div style={{ position: 'relative' }}>
